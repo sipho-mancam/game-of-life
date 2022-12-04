@@ -15,7 +15,6 @@ class GameOfLife{
         this.scanner.scan(); 
         this.grid.update();
         end = Date.now();
-
         console.log(`Time elapsed: ${(end-start) / 1000}s`);
     }
 }

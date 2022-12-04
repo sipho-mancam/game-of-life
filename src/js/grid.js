@@ -1,4 +1,4 @@
-const CELL_SIZE = 20;
+const CELL_SIZE = 15;
 const OFF_SET = 20;
 
 const canvas = document.getElementById('canvas');

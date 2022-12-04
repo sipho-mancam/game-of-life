@@ -30,9 +30,7 @@ class GridScanner{
         this.gridTransformer();
         for(let r=0; r<this.grid.length; r++){
             for(let c=0; c<this.grid[r].length; c++){
-
                 this.checkNeighbours(r, c);
-                
                 let cell = this.grid[r][c];
                 // if(cell.getLiveN()>0)console.log(`Neighbours ${cell.getLiveN()}, Row: ${r}, Column: ${c}`);
                 // update cell status here.
@@ -40,7 +38,7 @@ class GridScanner{
                 if(cell.getLiveN()<2 || cell.getLiveN()>3){
                     cell.setState(false);// dead cell;
                 }else if(cell.getLiveN()==3){
-                    cell.setState(true);   
+                    cell.setState(true);  //living cell 
                 }
                 cell.update();
             }
@@ -56,7 +54,7 @@ class GridScanner{
         for(let col=colum_offset_l; col<colum_offset_l+3; col++){
             
             if(col>=0){
-                
+                // check the top 3
                 if(this.symbolic_grid[row_above]){
                     if (this.symbolic_grid[row_above][col] != null && this.symbolic_grid[row_above][col]) {
                         let n = this.grid[r][c].getLiveN();
@@ -65,10 +63,8 @@ class GridScanner{
                     }
 
                 }
-
-                // console.log(this.symbolic_grid[row_below], row_below, `Row: ${r}, Column: ${c}`) 
+                // check the bottom 3
                 if(this.symbolic_grid[row_below]){
-                     
                     if (this.symbolic_grid[row_below][col] != null && this.symbolic_grid[row_below][col]) {
                         let n = this.grid[r][c].getLiveN();
                         n++;
@@ -78,19 +74,19 @@ class GridScanner{
             }
         }
 
-        // check the left and right position
+        // check the left cell
         if(this.symbolic_grid[r][c-1]){
             let n = this.grid[r][c].getLiveN();
             n++;
             this.grid[r][c].setLiveN(n);
         }
 
+        // check the right cell
         if(this.symbolic_grid[r][c+1]){
             let n = this.grid[r][c].getLiveN();
             n++;
             this.grid[r][c].setLiveN(n);
         }
-
     }
 
 }
