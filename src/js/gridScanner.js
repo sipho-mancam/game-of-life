@@ -2,7 +2,7 @@
 
 
 const s = stage;
-const gridUI = new Grid(s);
+const gridUI = grid;
 const grid_rep = gridUI.cells;
 
 class GridScanner{
@@ -10,7 +10,6 @@ class GridScanner{
         this.grid = grid;
         this.symbolic_grid = [];
         this.gridTransformer();
-        console.log(this.symbolic_grid);
     }
 
     // This method will tranform the UI grid objects into a matrix of 1s and 0s
@@ -30,6 +29,15 @@ class GridScanner{
         for(let r=0; r<this.grid.length; r++){
             for(let c=0; c<this.grid[0].length; c++){
                 this.checkNeighbours(r, c);
+                // update cell status here.
+                let cell = this.grid[r][c];
+                if(cell.getLiveN()<2){
+                    cell.setState(0);// dead cell;
+                }else if(cell.getLiveN()>=2 && cell.getLiveN()<=3){
+                 
+                }else if(cell.getLiveN()==3){
+                    cell.setState(1);
+                }
             }
         }
     }
@@ -41,7 +49,9 @@ class GridScanner{
 
         // check the row above
         for(let col=colum_offset_l; col<colum_offset_l+3; col++){
-            if(col>0){
+            
+            if(col>=0 && row_above>=0){
+                console.log(col)
                 if(this.symbolic_grid[row_above][col]){
                     let n = this.grid[r][c].getLiveN();
                     n++;
@@ -79,4 +89,5 @@ class GridScanner{
 
 
 const scanner = new GridScanner(grid_rep);
+
 

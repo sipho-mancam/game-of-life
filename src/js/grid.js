@@ -84,6 +84,7 @@ class Grid{
         this.stage = canvas;
         console.log(this.stage)
         this.cells = [];
+        this.drawGrid();
         for(let r=0; r<this.stage.canvas.width/CELL_SIZE; r++){
             let row = [];
             for(let x=0; x<this.stage.canvas.width/CELL_SIZE;x++){
@@ -95,7 +96,6 @@ class Grid{
                 c.addEventListener('click', (e)=>{
                     cell.state = !cell.state;
                     cell.update();
-                    this.stage.update();
                 });
                 row.push(cell);
             }
@@ -128,7 +128,7 @@ class Grid{
     drawGrid(){
         for(let x=1; x<this.stage.canvas.width/CELL_SIZE; x++)this.drawLineVertLine(x);
         for(let y=1; y<this.stage.canvas.height/CELL_SIZE; y++)this.drawLineHor(y);
-        this.stage.update();
+        // this.stage.update();
     }
 
     update(){
