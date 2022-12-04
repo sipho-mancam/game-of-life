@@ -8,3 +8,19 @@ canvas{
     border: 1px solid black;
     background-color: black;
 }
+
+
+
+.controls{
+    display: flex;
+    flex-flow: row;
+}
+
+button{
+    width: 200px;
+    margin-left: 20px;
+}
+
+#play{
+    background-color: greenyellow;
+}

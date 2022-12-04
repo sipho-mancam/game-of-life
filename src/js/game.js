@@ -35,6 +35,7 @@ playButon.addEventListener("click", (e)=>{
         createjs.Ticker.paused = false; // animation running
         playing = 1;
         playButon.innerText = 'pause';
+        playButon.style.backgroundColor = 'blue';
         createjs.Ticker.addEventListener("tick", () => {
             gof.play();
         });
@@ -44,5 +45,14 @@ playButon.addEventListener("click", (e)=>{
         createjs.Ticker.paused = true; // animate stopped
         playing = 0;
         playButon.innerText = 'play';
+        playButon.style.backgroundColor = 'greenyellow';
     }
 })
+
+
+const resetButton = document.getElementById('reset');
+
+resetButton.addEventListener('click', () =>{
+    window.location.reload();
+    resetButton.style.backgroundColor = 'blue';
+});
