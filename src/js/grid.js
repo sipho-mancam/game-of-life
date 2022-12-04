@@ -1,10 +1,10 @@
 const CELL_SIZE = 20;
-const OFF_SET = 50;
+const OFF_SET = 20;
 
 const canvas = document.getElementById('canvas');
 
-canvas.width = (window.innerWidth-OFF_SET) - window.innerWidth%CELL_SIZE;
-canvas.height =(window.innerHeight-OFF_SET)-window.innerHeight%CELL_SIZE;
+canvas.width = (window.innerWidth - OFF_SET) - window.innerWidth % CELL_SIZE;
+canvas.height = (window.innerHeight - OFF_SET-20) - window.innerHeight % CELL_SIZE;
 
 const stage = new createjs.Stage(canvas);
 
@@ -20,25 +20,37 @@ class Cell{
         this.backgroudColor = 'black';
         this.called = 0;
         this.number_of_neighours_living = 0;
+        this.cmdColor = null;
+        this.cmdStroke = null;
         
     }
 
-    
-
     update(){
-        if(this.state == 1){
-            this.cell.beginFill(this.color);
-        }else{
-            this.cell.beginFill(this.backgroudColor);
+        if (this.state) {
+            this.cmdColor.style = this.color;
+            this.cmdStroke.style = this.backgroudColor;
+        } else {
+           this.cmdColor.style = this.backgroudColor;
+           this.cmdStroke.style = this.color;
         }
-        this.cell.drawRect(this.xPos, this.yPos, CELL_SIZE, CELL_SIZE);   
+        this.number_of_neighours_living = 0;
     }
 
     init(x, y){
         if(!this.called){
             this.xPos = x; this.yPos = y;
+            if (this.state) {
+                this.cmdColor = this.cell.beginFill(this.color).command;
+                this.cmdStroke = this.cell.beginStroke(this.color).command;
+            } else {
+                this.cmdColor = this.cell.beginFill(this.backgroudColor).command;
+                this.cmdStroke = this.cell.beginStroke(this.color).command;
+            }
+            this.cell.drawRect(this.xPos, this.yPos, CELL_SIZE, CELL_SIZE);
+
             this.update();
             this.canvas.addChild(this.cellShape);
+            // this.cellShape.cache(this.xPos, this.yPos, CELL_SIZE, CELL_SIZE);
             this.called = 1;
             return this.cellShape;
         }
@@ -47,6 +59,15 @@ class Cell{
 
     init(){
         if(!this.called){
+            if (this.state) {
+                this.cmdColor = this.cell.beginFill(this.color).command;
+                this.cmdStroke= this.cell.beginStroke(this.color).command;
+            } else {
+                this.cmdColor = this.cell.beginFill(this.backgroudColor).command;
+                this.cmdStroke =  this.cell.beginStroke(this.color).command;
+            }
+            this.cell.drawRect(this.xPos, this.yPos, CELL_SIZE, CELL_SIZE); 
+            // this.cellShape.cache(this.xPos, this.yPos, CELL_SIZE, CELL_SIZE);
             this.update();
             this.canvas.addChild(this.cellShape);
             this.called = 1;
@@ -55,26 +76,15 @@ class Cell{
         return this.cellShape;
     }
 
-    setXPos(x){
-        this.xPos = x;
-    }
+    setXPos(x){this.xPos = x;}
+    setYPos(y){this.yPos = y;}
 
-    setYPos(y){
-        this.yPos = y;
-    }
-    setState(state){
-        this.state = state;
-    }
+    setState(state){this.state = state;}
+    getState(){ return this.state;}
 
-    getState(){
-        return this.state;
-    }
-    setColor(color){
-        this.color = color;
-    }
-    setLiveN(n){
-        this.number_of_neighours_living = n;
-    }
+    setColor(color){this.color = color;}
+
+    setLiveN(n){this.number_of_neighours_living = n;}
     getLiveN(){return this.number_of_neighours_living;}
 }
 
@@ -82,20 +92,23 @@ class Cell{
 class Grid{
     constructor(canvas){
         this.stage = canvas;
-        console.log(this.stage)
         this.cells = [];
-        this.drawGrid();
+        // Initialize cells
         for(let r=0; r<this.stage.canvas.width/CELL_SIZE; r++){
             let row = [];
             for(let x=0; x<this.stage.canvas.width/CELL_SIZE;x++){
                 let cell = new Cell(this.stage);
-                cell.state = 0;
+                cell.state = false;
                 cell.setXPos(x*CELL_SIZE);
                 cell.setYPos(r*CELL_SIZE);
                 let c = cell.init();
                 c.addEventListener('click', (e)=>{
                     cell.state = !cell.state;
                     cell.update();
+                    // c.updateCache();
+                    if(createjs.Ticker.paused){
+                        this.stage.update();
+                    }
                 });
                 row.push(cell);
             }
@@ -107,36 +120,12 @@ class Grid{
         return this.cells;
     }
 
-    drawLineVertLine(x){
-        const shape = new createjs.Shape();
-        const line = shape.graphics;
-        line.beginStroke("#32CD32");
-        line.moveTo(CELL_SIZE*x, 0);
-        line.lineTo(CELL_SIZE*x, this.stage.canvas.height);
-        this.stage.addChild(shape);
-    }
-
-    drawLineHor(y){
-        const shape = new createjs.Shape();
-        const line = shape.graphics;
-        line.beginStroke("#32CD32");
-        line.moveTo(0, CELL_SIZE*y);
-        line.lineTo(this.stage.canvas.width,CELL_SIZE*y);
-        this.stage.addChild(shape);
-    }
-
-    drawGrid(){
-        for(let x=1; x<this.stage.canvas.width/CELL_SIZE; x++)this.drawLineVertLine(x);
-        for(let y=1; y<this.stage.canvas.height/CELL_SIZE; y++)this.drawLineHor(y);
-        // this.stage.update();
-    }
-
     update(){
         this.stage.update();
     }
 }
 
-
 const grid = new Grid(stage);
 
-grid.drawGrid();
+
+

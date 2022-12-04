@@ -10,27 +10,39 @@ class GameOfLife{
     }
 
     play(){
-        this.grid.update();
+        let start, end;
+        start = Date.now();
         this.scanner.scan(); 
-    }
+        this.grid.update();
+        end = Date.now();
 
+        console.log(`Time elapsed: ${(end-start) / 1000}s`);
+    }
 }
 
-window.addEventListener('load', ()=>{
-    const gof = new GameOfLife(stage, grid, scanner)
-    gof.play();
-});
-
-window.addEventListener('resize', e=>{
-    const gof = new GameOfLife(stage, grid, scanner)
-    gof.play();
-})
 
 
+const gof = new GameOfLife(stage, grid, scanner)
+gof.play();
+createjs.Ticker.paused = true;
+createjs.Ticker.interval = 200;
+const playButon = document.getElementById("play");
 
+let playing = 0;
 
+playButon.addEventListener("click", (e)=>{
+    if(playing === 0){
+        createjs.Ticker.paused = false; // animation running
+        playing = 1;
+        playButon.innerText = 'pause';
+        createjs.Ticker.addEventListener("tick", () => {
+            gof.play();
+        });
 
-createjs.Ticker.addEventListener("tick", ()=>{
-    
-    
+    }else{
+        createjs.Ticker.removeAllEventListeners("tick");
+        createjs.Ticker.paused = true; // animate stopped
+        playing = 0;
+        playButon.innerText = 'play';
+    }
 })
