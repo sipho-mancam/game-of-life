@@ -10,6 +10,7 @@ class GridScanner{
         this.grid = grid;
         this.symbolic_grid = [];
         this.gridTransformer();
+        gridUI.setState(this.symbolic_grid);
     }
 
     // This method will tranform the UI grid objects into a matrix of 1s and 0s
@@ -23,6 +24,11 @@ class GridScanner{
             }
             this.symbolic_grid.push(row);
         }
+       
+    }
+
+    dumpState(){
+        gridUI.setState(this.symbolic_grid);
     }
 
     // The actual scanning and checking 

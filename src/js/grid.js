@@ -3,8 +3,11 @@ const OFF_SET = 20;
 
 const canvas = document.getElementById('canvas');
 
-canvas.width = (window.innerWidth - OFF_SET) - window.innerWidth % CELL_SIZE;
-canvas.height = (window.innerHeight - OFF_SET-20) - window.innerHeight % CELL_SIZE;
+const windowWidth = window.innerWidth;
+const windowHeight = window.innerHeight;
+
+canvas.width = (windowWidth*0.78 - OFF_SET) - (windowWidth*0.78) % CELL_SIZE;
+canvas.height = (window.innerHeight) - window.innerHeight % CELL_SIZE;
 
 const stage = new createjs.Stage(canvas);
 
@@ -91,7 +94,13 @@ class Cell{
 
 class Grid{
     constructor(canvas){
+        this.x_offset=0;
+        this.y_offset=0;
         this.stage = canvas;
+
+        this.state_grid = Array(Number(this.stage.canvas.width));
+
+        
         this.cells = [];
         // Initialize cells
         for(let r=0; r<this.stage.canvas.width/CELL_SIZE; r++){
@@ -116,8 +125,20 @@ class Grid{
         }
     }
 
-    getGrid(){
-        return this.cells;
+    setState(state){
+        console.log("state changed");
+        this.state_grid = [... state];
+    }
+    getState(){return this.state_grid;}
+
+    getGrid(){return this.cells;}
+    loadState(){
+        for(let r=this.y_offset; r<this.cells.length; r++){
+            for(let x=this.x_offset; x<this.cells[r].length; x++){
+                    this.cells[r-this.y_offset][x-this.x_offset].setState(this.state_grid[r][x]);
+                    console.log(this.state_grid[r][x]);
+            }
+        }
     }
 
     update(){

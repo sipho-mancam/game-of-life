@@ -9,12 +9,58 @@
     <title>Game of Life</title>
 </head>
 <body>
-    <canvas id="canvas"></canvas>
+    <div class="main">
 
-    <div class="controls">
-        <button id="play">play</button>
-        <button id="reset">reset</button>
+        <div class="side-panel">
+            <div class="section">
+                <h3>Jon Conway's Game of Life</h3>
+            </div>
+
+            <div class="description">
+                <p>The Game of Life, also known simply as Life, 
+                    is a cellular automaton devised by the British mathematician 
+                    John Horton Conway in 1970. It is a zero-player game, 
+                    meaning that its evolution is determined by its initial state, 
+                    requiring no further input. 
+                    One interacts with the Game of Life by creating an initial 
+                    configuration and observing how it evolves. 
+                    It is Turing complete and can simulate a universal constructor 
+                    or any other Turing machine. <a target="_blank" href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">More...</a>
+                </p>
+            </div>
+
+            <div class="section">
+                <h4>Instructions</h4>
+            </div>
+
+            <div class="description">
+                <ol>
+                    <li>Click on a cell to activate/deactivate it</li>
+                    <li>When you are done creating your initial pattern, click play.</li>
+                    <li>The pattern will evolve based on Conway's rules</li>
+                    <li>Click Reset to clear the grid.</li>
+                    <li>Click Save to save the current grid state.</li>
+
+                </ol>
+            </div>
+
+            <div class="controls">
+                <button id="play">play</button>
+                <button id="reset">reset</button>
+                <button id="save">Save</button>
+            </div>
+        </div>
+
+        <div class="canv">
+            <canvas id="canvas"></canvas>
+        </div> 
     </div>
+
+    <div class="messenger" id="messenger">
+        <img src="https://cdn.pixabay.com/photo/2013/07/13/13/21/information-160885_1280.png" />
+        <p id="message-body" >Saved Successfully !!!</p>
+    </div>
+    
 </body>
 <script src="./js/grid.js"></script>
 <script src="./js/gridScanner.js"></script>
