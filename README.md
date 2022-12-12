@@ -48,7 +48,7 @@ This project had these objectives:
 ![play1](play1.png)
 
 
-# Review
+# Remarks
 
 * This Project could use some improvement in UI design.
 * I still need to implement the Zoom-in, Zoom-out of the grid functionality.
